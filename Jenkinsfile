@@ -3,16 +3,28 @@ pipeline {
 
     parameters {
         choice(
-            name: 'ENVIRONMENT',
-            choices: ['Development', 'Testing', 'Production'],
-            description: 'Select the deployment environment'
+            name: 'ENV',
+            choices: ['DEV', 'QA', 'PROD'],
+            description: 'Select Environment'
         )
     }
 
     stages {
-        stage('Show Environment') {
+        stage('Check Environment') {
             steps {
-                echo "Selected Environment: ${params.ENVIRONMENT}"
+                script {
+
+                    if (params.ENV == 'DEV') {
+                        echo "Development Environment Selected"
+                    }
+                    else if (params.ENV == 'QA') {
+                        echo "QA Environment Selected"
+                    }
+                    else {
+                        echo "Production Environment Selected"
+                    }
+
+                }
             }
         }
     }

@@ -1,46 +1,19 @@
 pipeline {
     agent any
 
-    environment {
-        APP_NAME = "MyWebApp"
-        ENVIRONMENT = "Development"
-        VERSION = "1.0.0"
+    parameters {
+        choice(
+            name: 'ENVIRONMENT',
+            choices: ['Development', 'Testing', 'Production'],
+            description: 'Select the deployment environment'
+        )
     }
 
     stages {
-
-        stage('Welcome') {
+        stage('Show Environment') {
             steps {
-                echo "Welcome to Jenkins Pipeline"
+                echo "Selected Environment: ${params.ENVIRONMENT}"
             }
-        }
-
-        stage('Application Info') {
-            steps {
-                echo "Application Name: ${APP_NAME}"
-                echo "Environment: ${ENVIRONMENT}"
-                echo "Version: ${VERSION}"
-            }
-        }
-
-        stage('Finish') {
-            steps {
-                echo "Pipeline completed successfully."
-            }
-        }
-    }
-
-    post {
-        always {
-            echo "Pipeline execution finished."
-        }
-
-        success {
-            echo "Build Status: SUCCESS"
-        }
-
-        failure {
-            echo "Build Status: FAILURE"
         }
     }
 }

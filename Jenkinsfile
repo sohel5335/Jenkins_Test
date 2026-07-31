@@ -2,27 +2,43 @@ pipeline {
     agent any
 
     parameters {
-        choice(
-            name: 'ENV',
-            choices: ['DEV', 'QA', 'PROD'],
-            description: 'Select Environment'
+        string(
+            name: 'APP_NAME',
+            defaultValue: 'MyWebApp',
+            description: 'Enter Application Name'
+        )
+
+        booleanParam(
+            name: 'DEPLOY',
+            defaultValue: false,
+            description: 'Deploy Application?'
         )
     }
 
     stages {
-        stage('Check Environment') {
-            steps {
-                script {
-                    echo "Selected Value: '${params.ENV}'"
 
-                    if (params.ENV == "DEV") {
-                        echo "Development Environment Selected"
-                    } else if (params.ENV == "QA") {
-                        echo "QA Environment Selected"
-                    } else {
-                        echo "Production Environment Selected"
-                    }
+        stage('Build') {
+            steps {
+                echo "Building ${params.APP_NAME}..."
+            }
+        }
+
+        stage('Deploy') {
+            when {
+                expression {
+                    return params.DEPLOY
                 }
+            }
+
+            steps {
+                echo "Deploying ${params.APP_NAME}..."
+            }
+        }
+
+        stage('Summary') {
+            steps {
+                echo "Application Name : ${params.APP_NAME}"
+                echo "Deploy Selected  : ${params.DEPLOY}"
             }
         }
     }

@@ -13,17 +13,15 @@ pipeline {
         stage('Check Environment') {
             steps {
                 script {
+                    echo "Selected Value: '${params.ENV}'"
 
-                    if (params.ENV == 'DEV') {
+                    if (params.ENV == "DEV") {
                         echo "Development Environment Selected"
-                    }
-                    else if (params.ENV == 'QA') {
+                    } else if (params.ENV == "QA") {
                         echo "QA Environment Selected"
-                    }
-                    else {
+                    } else {
                         echo "Production Environment Selected"
                     }
-
                 }
             }
         }
